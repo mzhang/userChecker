@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 def checkWebsite(username, website):
 
-    keywords = ('not found', '''n't found''', '''doesn't exist''', 'not exist', '''isn't available''', 'not available', 'unavailable')
+    keywords = ('not found', '''n't found''', '''doesn't exist''', 'not exist', '''isn't available''', 'not available')
     result = requests.get(website + username)
 
     code = result.status_code
@@ -24,17 +24,26 @@ def checkWebsite(username, website):
         print(username + " is unavailable on " + website)
 
 
-username = input(": ")
-websites = ("https://github.com/",
-            "https://old.reddit.com/user/",
-            "https://youtube.com/",
-            "https://instagram.com/",
-            "https://open.spotify.com/user/")
 
-for i in websites:
-    checkWebsite(username, i)
+
+with open('websites.txt') as websitesFile:
+    websites = [line.rstrip() for line in websitesFile]
+
+with open('usernames.txt') as usernameList:
+    usernames = [line.rstrip() for line in usernameList]
+
+for i in usernames:
+    for j in websites:
+        checkWebsite(i, j)
+    print("\n\n")
 
 
 
 # f = open("scrapedHTML.txt", "w")
 # f.write(str_soup)
+
+# ("https://github.com/",
+# "https://old.reddit.com/user/",
+# "https://youtube.com/",
+# "https://instagram.com/",
+# "https://open.spotify.com/user/")
