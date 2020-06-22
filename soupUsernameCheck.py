@@ -1,29 +1,25 @@
 import requests
 from bs4 import BeautifulSoup
 
-def checkWebsite(username, website):
+def isUsernameAvailable(username, website):
 
     keywords = ('not found', '''n't found''', '''doesn't exist''', 'not exist', '''isn't available''', 'not available')
     result = requests.get(website + username)
 
     code = result.status_code
     if code == 404:
-        print(username + " is available on " + website)
-        return
+        return True
     elif code == 429:
-        print("rate limited on " + website + "! try again later.")
-        return
+        raise Exception()
 
     soup = BeautifulSoup(result.content,'lxml')
     str_soup = str(soup.encode("utf-8")).lower()
 
     match = next((x for x in keywords if x in str_soup), False)
     if match != False:
-        print(username + " is available on " + website)
+        return True
     else:
-        print(username + " is unavailable on " + website)
-
-
+        return False
 
 with open('websites.txt') as websitesFile:
     websites = [line.rstrip() for line in websitesFile]
@@ -35,5 +31,8 @@ with open('usernames.txt') as usernamesFile:
 
 for i in usernames:
     for j in websites:
-        checkWebsite(i, j)
+        try:
+            print(i + " is available on " + j) if isUsernameAvailable(i, j) else print(i + " is unavailable on " + j)
+        except:
+            print("Rate limited on " + j + "! Try again later.")
     print("\n\n")
