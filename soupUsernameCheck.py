@@ -25,25 +25,15 @@ def checkWebsite(username, website):
 
 
 
-
 with open('websites.txt') as websitesFile:
     websites = [line.rstrip() for line in websitesFile]
+    websitesFile.close()
 
-with open('usernames.txt') as usernameList:
-    usernames = [line.rstrip() for line in usernameList]
+with open('usernames.txt') as usernamesFile:
+    usernames = [line.rstrip() for line in usernamesFile]
+    usernamesFile.close()
 
 for i in usernames:
     for j in websites:
         checkWebsite(i, j)
     print("\n\n")
-
-
-
-# f = open("scrapedHTML.txt", "w")
-# f.write(str_soup)
-
-# ("https://github.com/",
-# "https://old.reddit.com/user/",
-# "https://youtube.com/",
-# "https://instagram.com/",
-# "https://open.spotify.com/user/")
